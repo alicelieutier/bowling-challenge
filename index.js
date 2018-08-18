@@ -21,14 +21,18 @@ class Frame {
     this.score += roll.nb_of_pins;
   }
 
-  finished() {
+  isFinished() {
     if (this.number != 10) {
       return (
         this.rolls[0].nb_of_pins == 10 ||
         this.rolls.length == 2
       )
     }
-    return false;
+    // strike or spare?
+    if (this.score >= 10) {
+      return this.rolls.length === 3
+    }
+    return this.rolls.length === 2
   }
 }
 
@@ -41,18 +45,18 @@ class Game {
     var roll = new Roll(nb_of_pins);
     if (this.current_frame === undefined) {
       this.current_frame = new Frame(1);
-      this.current_frame.addRoll(roll);
-    // if the current frame is not finished
-    } else if (this.current_frame.finished() == false) {
-      this.current_frame.addRoll(roll);
+
+    } else if (this.current_frame.isFinished() == false) {
+      // if the current frame is not finished
     } else {
       this.past_frames.push(this.current_frame);
       var newFrame = new Frame(
-        this.past_frames.length,
+        this.past_frames.length + 1,
         this.current_frame
       );
       this.current_frame = newFrame;
     }
+    this.current_frame.addRoll(roll);
   }
 
   getScore() {
@@ -64,5 +68,12 @@ class Game {
       score += this.current_frame.score;
     }
     return score;
+  }
+
+  isFinished() {
+    return (
+      this.past_frames.length === 9 &&
+      this.current_frame.isFinished()
+    );
   }
 }
