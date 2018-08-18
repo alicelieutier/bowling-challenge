@@ -1,5 +1,3 @@
-console.log('Hello');
-
 class Roll {
   constructor(nb_of_pins) {
     if (nb_of_pins < 0 || nb_of_pins > 10) {
