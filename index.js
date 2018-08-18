@@ -8,16 +8,27 @@ class Roll {
 }
 
 class Frame {
-  constructor(id, previous_id = undefined) {
-    this.id = id;
-    this.past_rolls = [];
+  constructor(number, previous_frame = undefined) {
+    this.number = number;
+    this.rolls = [];
     this.score = 0;
     this.bonus = 0;
+    this.previous_frame = previous_frame;
   }
 
   addRoll(roll) {
-    this.past_rolls.push(roll);
+    this.rolls.push(roll);
     this.score += roll.nb_of_pins;
+  }
+
+  finished() {
+    if (this.number != 10) {
+      return (
+        this.rolls[0].nb_of_pins == 10 ||
+        this.rolls.length == 2
+      )
+    }
+    return false;
   }
 }
 
@@ -28,10 +39,19 @@ class Game {
 
   addRoll(nb_of_pins) {
     var roll = new Roll(nb_of_pins);
-    // is this the first frame
     if (this.current_frame === undefined) {
-      this.current_frame = new Frame(0);
+      this.current_frame = new Frame(1);
       this.current_frame.addRoll(roll);
+    // if the current frame is not finished
+    } else if (this.current_frame.finished() == false) {
+      this.current_frame.addRoll(roll);
+    } else {
+      this.past_frames.push(this.current_frame);
+      var newFrame = new Frame(
+        this.past_frames.length,
+        this.current_frame
+      );
+      this.current_frame = newFrame;
     }
   }
 
