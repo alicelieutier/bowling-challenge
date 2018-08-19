@@ -11,28 +11,56 @@ class Frame {
   constructor(number, previous_frame = undefined) {
     this.number = number;
     this.rolls = [];
-    this.score = 0;
-    this.bonus = 0;
+    this.expectedBonus = 0;
+    this.bonusRolls = [];
     this.previous_frame = previous_frame;
   }
 
   addRoll(roll) {
     this.rolls.push(roll);
-    this.score += roll.nb_of_pins;
+    // is the previous frame expecting a bonus?
+    if (this.previous_frame && this.previous_frame.expectedBonus > 0) {
+      this.previous_frame.addBonus(roll);
+    }
+
+    if (this.isFinished() && this.getScore() == 10) {
+      // 2 for a strike, 1 for a spare
+      this.expectedBonus = 3 - this.rolls.length;
+    }
+  }
+
+  addBonus(roll) {
+    this.bonusRolls.push(roll);
+    this.expectedBonus -= 1;
+    // is the previous frame also expecting a bonus?
+    if (this.previous_frame && this.previous_frame.expectedBonus > 0) {
+      this.previous_frame.addBonus(roll);
+    }
   }
 
   isFinished() {
-    if (this.number != 10) {
-      return (
-        this.rolls[0].nb_of_pins == 10 ||
-        this.rolls.length == 2
-      )
+    return (
+      this.rolls[0].nb_of_pins == 10 ||
+      this.rolls.length == 2
+    )
+  }
+
+  getScore() {
+    var score = 0;
+    for (var i = 0; i < this.rolls.length; i++) {
+      score += this.rolls[i].nb_of_pins;
     }
-    // strike or spare?
-    if (this.score >= 10) {
-      return this.rolls.length === 3
+    for (var j = 0; j < this.bonusRolls.length; j++) {
+      score += this.bonusRolls[j].nb_of_pins;
     }
-    return this.rolls.length === 2
+    return score;
+  }
+
+  getScoreForGame() {
+    if (this.number > 10) {
+      return 0;
+    }
+    return this.getScore();
   }
 }
 
@@ -46,9 +74,7 @@ class Game {
     if (this.current_frame === undefined) {
       this.current_frame = new Frame(1);
 
-    } else if (this.current_frame.isFinished() == false) {
-      // if the current frame is not finished
-    } else {
+    } else if (this.current_frame.isFinished()) {
       this.past_frames.push(this.current_frame);
       var newFrame = new Frame(
         this.past_frames.length + 1,
@@ -62,18 +88,24 @@ class Game {
   getScore() {
     var score = 0;
     for (var i = 0; i < this.past_frames.length; i++) {
-      score += this.past_frames[i].score;
+      score += this.past_frames[i].getScoreForGame();
     }
     if (this.current_frame != undefined) {
-      score += this.current_frame.score;
+      score += this.current_frame.getScoreForGame();
     }
     return score;
   }
 
   isFinished() {
     return (
-      this.past_frames.length === 9 &&
-      this.current_frame.isFinished()
+      (
+        this.past_frames.length === 9 &&
+        this.current_frame.isFinished() &&
+        this.current_frame.expectedBonus == 0
+      ) || (
+        this.past_frames.length >= 10 &&
+        this.past_frames[9].expectedBonus == 0
+      )
     );
   }
 }

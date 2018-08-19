@@ -8,8 +8,9 @@ var tests = [
   function newFrame(){
     var frame = new Frame(1);
     assert(frame.rolls.length === 0);
-    assert(frame.score === 0);
-    assert(frame.bonus === 0);
+    assert(frame.getScore() === 0);
+    assert(frame.expectedBonus === 0);
+    assert(frame.bonusRolls.length === 0);
     assert(frame.number === 1);
     assert(frame.previous_frame === undefined);
   },
@@ -105,6 +106,7 @@ var tests = [
     game.addRoll(3);
     // 10
     game.addRoll(10);
+    // bonus frame
     game.addRoll(3);
     game.addRoll(3);
 
@@ -145,6 +147,97 @@ var tests = [
 
     assert(game.getScore() === 91);
     assert(game.isFinished() === false);
+  },
+  function spareOnLastFrameUnfinished(){
+    var game = new Game();
+    // 1
+    game.addRoll(6);
+    game.addRoll(3);
+    // 2
+    game.addRoll(6);
+    game.addRoll(3);
+    // 3
+    game.addRoll(6);
+    game.addRoll(3);
+    // 4
+    game.addRoll(6);
+    game.addRoll(3);
+    // 5
+    game.addRoll(6);
+    game.addRoll(3);
+    // 6
+    game.addRoll(6);
+    game.addRoll(3);
+    // 7
+    game.addRoll(6);
+    game.addRoll(3);
+    // 8
+    game.addRoll(6);
+    game.addRoll(3);
+    // 9
+    game.addRoll(6);
+    game.addRoll(3);
+    // 10
+    game.addRoll(7);
+    game.addRoll(3);
+
+    assert(game.getScore() === 91);
+    assert(game.isFinished() === false);
+  },
+  function strikeScoring(){
+    var game = new Game();
+    // 1
+    game.addRoll(10);
+    // 2
+    game.addRoll(3);
+    game.addRoll(3);
+
+    assert(game.getScore() === 22);
+  },
+  function multipleStrikeScoring(){
+    var game = new Game();
+    // 1
+    game.addRoll(10);
+    // 2
+    game.addRoll(10);
+    // 3
+    game.addRoll(3);
+    game.addRoll(3);
+
+    assert(game.getScore() === 23 + 16 + 6);
+  },
+  function perfectGame(){
+    var game = new Game();
+    // 1
+    game.addRoll(10);
+    // 2
+    game.addRoll(10);
+    // 3
+    game.addRoll(10);
+    // 4
+    game.addRoll(10);
+    // 5
+    game.addRoll(10);
+    // 6
+    game.addRoll(10);
+    // 7
+    game.addRoll(10);
+    // 8
+    game.addRoll(10);
+    // 9
+    game.addRoll(10);
+    // 10
+    game.addRoll(10);
+
+    game.addRoll(10);
+    game.addRoll(10);
+
+    console.log(game.getScore());
+    console.log(game);
+    window.game = game;
+
+    assert(game.getScore() === 300);
+    assert(game.isFinished() === true);
   },
 ];
 
