@@ -31,7 +31,7 @@ class Frame {
 
   isFinished() {
     return (
-      this.rolls[0].nb_of_pins == 10 ||
+      this.__getScore() >= 10 ||
       this.rolls.length == 2
     )
   }
@@ -66,46 +66,37 @@ class Frame {
 
 class Game {
   constructor() {
-    this.past_frames = [];
+    this.current_frame = new Frame(1)
+    this.frames = [this.current_frame];
   }
 
   addRoll(nb_of_pins) {
-    var roll = new Roll(nb_of_pins);
-    if (this.current_frame === undefined) {
-      this.current_frame = new Frame(1);
-
-    } else if (this.current_frame.isFinished()) {
-      this.past_frames.push(this.current_frame);
+    if (this.current_frame.isFinished()) {
       var newFrame = new Frame(
-        this.past_frames.length + 1,
+        this.frames.length + 1,
         this.current_frame
       );
       this.current_frame = newFrame;
+      this.frames.push(this.current_frame);
     }
+
+    var roll = new Roll(nb_of_pins);
     this.current_frame.addRoll(roll);
   }
 
   getScore() {
     var score = 0;
-    for (var i = 0; i < this.past_frames.length; i++) {
-      score += this.past_frames[i].getScoreForGame();
-    }
-    if (this.current_frame != undefined) {
-      score += this.current_frame.getScoreForGame();
+    for (var i = 0; i < this.frames.length; i++) {
+      score += this.frames[i].getScoreForGame();
     }
     return score;
   }
 
   isFinished() {
     return (
-      (
-        this.past_frames.length === 9 &&
-        this.current_frame.isFinished() &&
-        this.current_frame.expectedBonus == 0
-      ) || (
-        this.past_frames.length >= 10 &&
-        this.past_frames[9].expectedBonus == 0
-      )
+      this.frames.length >= 10 &&
+      this.frames[9].isFinished() &&
+      this.frames[9].expectedBonus == 0
     );
   }
 }
