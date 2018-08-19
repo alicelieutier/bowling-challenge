@@ -8,7 +8,7 @@ var tests = [
   function newFrame(){
     var frame = new Frame(1);
     assert(frame.rolls.length === 0);
-    assert(frame.getScore() === 0);
+    assert(frame.getScoreForGame() === 0);
     assert(frame.expectedBonus === 0);
     assert(frame.bonusRolls.length === 0);
     assert(frame.number === 1);
@@ -231,10 +231,6 @@ var tests = [
 
     game.addRoll(10);
     game.addRoll(10);
-
-    console.log(game.getScore());
-    console.log(game);
-    window.game = game;
 
     assert(game.getScore() === 300);
     assert(game.isFinished() === true);

@@ -20,21 +20,12 @@ class Frame {
     this.rolls.push(roll);
     // is the previous frame expecting a bonus?
     if (this.previous_frame && this.previous_frame.expectedBonus > 0) {
-      this.previous_frame.addBonus(roll);
+      this.previous_frame.__addBonus(roll);
     }
 
-    if (this.isFinished() && this.getScore() == 10) {
+    if (this.isFinished() && this.__getScore() == 10) {
       // 2 for a strike, 1 for a spare
       this.expectedBonus = 3 - this.rolls.length;
-    }
-  }
-
-  addBonus(roll) {
-    this.bonusRolls.push(roll);
-    this.expectedBonus -= 1;
-    // is the previous frame also expecting a bonus?
-    if (this.previous_frame && this.previous_frame.expectedBonus > 0) {
-      this.previous_frame.addBonus(roll);
     }
   }
 
@@ -45,7 +36,14 @@ class Frame {
     )
   }
 
-  getScore() {
+  getScoreForGame() {
+    if (this.number > 10) {
+      return 0;
+    }
+    return this.__getScore();
+  }
+
+  __getScore() {
     var score = 0;
     for (var i = 0; i < this.rolls.length; i++) {
       score += this.rolls[i].nb_of_pins;
@@ -56,11 +54,13 @@ class Frame {
     return score;
   }
 
-  getScoreForGame() {
-    if (this.number > 10) {
-      return 0;
+  __addBonus(roll) {
+    this.bonusRolls.push(roll);
+    this.expectedBonus -= 1;
+    // is the previous frame also expecting a bonus?
+    if (this.previous_frame && this.previous_frame.expectedBonus > 0) {
+      this.previous_frame.__addBonus(roll);
     }
-    return this.getScore();
   }
 }
 
