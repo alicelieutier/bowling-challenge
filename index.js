@@ -1,7 +1,9 @@
+var sum = (array) => array.reduce((a, b) => a + b, 0);
+
 class Roll {
   constructor(nb_of_pins) {
     if (nb_of_pins < 0 || nb_of_pins > 10) {
-      throw new Error("Wrong number of pins");
+      throw new Error("Wrong number of pins for roll");
     }
     this.nb_of_pins = nb_of_pins
   }
@@ -44,13 +46,9 @@ class Frame {
   }
 
   __getScore() {
-    var score = 0;
-    for (var i = 0; i < this.rolls.length; i++) {
-      score += this.rolls[i].nb_of_pins;
-    }
-    for (var j = 0; j < this.bonusRolls.length; j++) {
-      score += this.bonusRolls[j].nb_of_pins;
-    }
+    var scores = this.rolls.map((roll) => roll.nb_of_pins);
+    var bonuses = this.bonusRolls.map((roll) => roll.nb_of_pins);
+    var score = sum(scores.concat(bonuses));
     return score;
   }
 
@@ -85,11 +83,8 @@ class Game {
   }
 
   getScore() {
-    var score = 0;
-    for (var i = 0; i < this.frames.length; i++) {
-      score += this.frames[i].getScoreForGame();
-    }
-    return score;
+    var scores = this.frames.map((frame) => frame.getScoreForGame());
+    return sum(scores);
   }
 
   isFinished() {
