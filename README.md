@@ -15,17 +15,20 @@ When the game has reached an end:
 
 ## Design
 
-[ ] Roll
-  [ ] number of pins
+[X] Roll
+  [X] number of pins
 
-[ ] Frame
- [ ] Past rolls array (one, two or three for last frame)
- [ ] Current roll
- [ ] Bonus points (backfilled from next rolls)
- [ ] Score
+[X] Frame
+ [X] Rolls array (one, two or three for last frame)
+ [X] Bonus points (backfilled from next rolls)
+ [X] Score
 
-[ ] Game
-  [ ] Past frames array
-  [ ] Current frame
-  [ ] Current score
-  [ ] Final score ?
+[X] Game
+  [X] Frames array
+  [X] Current frame
+  [X] Current score
+
+## TODO
+
+[ ] UI
+[ ] Better testing framework (https://www.instagram.com/p/BmnN2gfhb3e/)
