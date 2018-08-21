@@ -7,9 +7,15 @@
   </head>
   <body>
     <h1>Welcome to the bowling scorer</h1>
-    <div class="score"></div>
-    <div class="frames"></div>
-    <div class="form"></div>
+    <div id="score"></div>
+    <div id="frames"></div>
+    <div id="form">
+      <label>
+        Number of pins rolled:
+        <input type="number" id="roll" min="0" max="10">
+        <button type="button" id="roll_button" name="button">Go</button>
+      </label>
+    </div>
     <script type="text/javascript" src="index.js"></script>
   </body>
 </html>

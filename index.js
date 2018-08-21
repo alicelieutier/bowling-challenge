@@ -84,6 +84,7 @@ class Game {
 
   getScore() {
     var scores = this.frames.map((frame) => frame.getScoreForGame());
+    console.log(scores);
     return sum(scores);
   }
 
@@ -95,3 +96,29 @@ class Game {
     );
   }
 }
+
+// UI
+var frames = document.getElementById('frames');
+var roll_input = document.getElementById('roll');
+var roll_button = document.getElementById('roll_button');
+var score = document.getElementById('score');
+
+var game = new Game();
+roll_button.addEventListener('click', (e) => {
+  var nb_of_pins = parseInt(roll_input.value);
+  roll_input.value = '';
+  game.addRoll(nb_of_pins);
+  window.game = game;
+  console.log(game.getScore());
+  console.log(game.frames);
+  score.innerText = 'Score: ' + game.getScore();
+  var frame_els = game.frames.map((frame) => {
+    if (frame.number > 10) return;
+    var frame_el = document.createElement('div');
+    var formatted_rolls = frame.rolls.map((roll) => roll.nb_of_pins).join(', ')
+    frame_el.innerText = 'Frame #' + frame.number + ' : ' + frame.getScoreForGame() + ' (Rolls: ' + formatted_rolls + ')';
+    return frame_el;
+  });
+  frames.innerHTML = '';
+  frame_els.map((frame_el)=>{frames.appendChild(frame_el)});
+});
