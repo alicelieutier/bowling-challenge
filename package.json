@@ -1,0 +1,22 @@
+{
+  "name": "bowling-challenge",
+  "version": "1.0.0",
+  "description": "A ten-pin bowling scorer in javascript, from Makers curriculum.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alicelieutier/bowling-challenge.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alicelieutier/bowling-challenge/issues"
+  },
+  "homepage": "https://github.com/alicelieutier/bowling-challenge#readme"
+}
