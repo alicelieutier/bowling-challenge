@@ -113,27 +113,33 @@ class Game {
 // UI
 const frames = document.getElementById('frames');
 const roll_input = document.getElementById('roll');
-const roll_button = document.getElementById('roll_button');
 const score = document.getElementById('score');
+const form = document.getElementById('form');
 
 const game = new Game();
-roll_button.addEventListener('click', () => {
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
   const nb_of_pins = parseInt(roll_input.value);
-  roll_input.value = '0';
+  roll_input.value = '';
   game.addRoll(nb_of_pins);
+  score.innerText = 'Score: ' + game.getScore();
   roll_input.max = game.nextRollMax();
-  if (game.isFinished()) {
-    score.innerText = 'Final Score: ' + game.getScore() + '!!';
-  } else {
-    score.innerText = 'Score: ' + game.getScore();
-  }
   const frame_els = game.frames.map((frame) => {
     if (frame.number > 10) return;
     const frame_el = document.createElement('div');
     const formatted_rolls = frame.rolls.map((roll) => roll.nb_of_pins).join(', ');
     frame_el.innerText = 'Frame #' + frame.number + ' : ' + frame.getScoreForGame() + ' (Rolls: ' + formatted_rolls + ')';
     return frame_el;
-  });
+  }).filter((e) => !!e);
   frames.innerHTML = '';
   frame_els.map((frame_el)=>{frames.appendChild(frame_el);});
+  if (game.isFinished()) {
+    if (game.getScore() === 300) {
+      score.innerText = 'Perfect game !!';
+    } else {
+      score.innerText = 'Final Score: ' + game.getScore();
+    }
+    form.innerHTML = '';
+    return;
+  }
 });

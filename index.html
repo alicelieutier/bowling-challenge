@@ -9,12 +9,15 @@
     <h1>Welcome to the bowling scorer</h1>
     <div id="score"></div>
     <div id="frames"></div>
-    <div id="form">
+    <form id="form">
       <label>
         Number of pins rolled:
-        <input type="number" id="roll" min="0" max="10" value="0">
-        <button type="button" id="roll_button" name="button">Go</button>
+        <input type="number" id="roll" min="0" max="10" required>
+        <input type="submit" id="roll_button" value="Go">
       </label>
+    </form>
+    <div>
+      <a href="index.html">New Game</a>
     </div>
     <script type="text/javascript" src="index.js"></script>
   </body>
