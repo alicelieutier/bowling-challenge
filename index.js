@@ -45,6 +45,13 @@ class Frame {
         return this.__getScore();
     }
 
+    nextRollMax() {
+        if (this.isFinished()) {
+            return 10;
+        }
+        return 10 - this.__getScore();
+    }
+
     __getScore() {
         const scores = this.rolls.map((roll) => roll.nb_of_pins);
         const bonuses = this.bonusRolls.map((roll) => roll.nb_of_pins);
@@ -82,6 +89,13 @@ class Game {
         this.current_frame.addRoll(roll);
     }
 
+    nextRollMax() {
+        if (this.isFinished()) {
+            return 0;
+        }
+        return this.current_frame.nextRollMax();
+    }
+
     getScore() {
         const scores = this.frames.map((frame) => frame.getScoreForGame());
         return sum(scores);
@@ -105,10 +119,14 @@ const score = document.getElementById('score');
 const game = new Game();
 roll_button.addEventListener('click', () => {
     const nb_of_pins = parseInt(roll_input.value);
-    roll_input.value = '';
+    roll_input.value = '0';
     game.addRoll(nb_of_pins);
-    window.game = game;
-    score.innerText = 'Score: ' + game.getScore();
+    roll_input.max = game.nextRollMax();
+    if (game.isFinished()) {
+        score.innerText = 'Final Score: ' + game.getScore() + '!!';
+    } else {
+        score.innerText = 'Score: ' + game.getScore();
+    }
     const frame_els = game.frames.map((frame) => {
         if (frame.number > 10) return;
         const frame_el = document.createElement('div');

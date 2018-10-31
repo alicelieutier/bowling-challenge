@@ -235,6 +235,116 @@ const tests = [
         assert(game.getScore() === 300);
         assert(game.isFinished() === true);
     },
+    function nextRollMaxAtStart(){
+        const game = new Game();
+        assert(game.nextRollMax() === 10);
+    },
+    function nextRollMaxAfter2PinsDownOnFrame(){
+        const game = new Game();
+        game.addRoll(2);
+        assert(game.nextRollMax() === 8);
+    },
+    function nextRollMaxAfter0PinsDownOnFrame(){
+        const game = new Game();
+        game.addRoll(0);
+        assert(game.nextRollMax() === 10);
+    },
+    function nextRollMaxAfterOnSecondFrameAfterTypicalFirstFrame(){
+        const game = new Game();
+        game.addRoll(2);
+        game.addRoll(3);
+        assert(game.nextRollMax() === 10);
+    },
+    function nextRollMaxAfterOnSecondFrameAfterStrike(){
+        const game = new Game();
+        game.addRoll(10);
+        assert(game.nextRollMax() === 10);
+    },
+    function nextRollMaxAfterOnSecondFrameAfterSpare(){
+        const game = new Game();
+        game.addRoll(9);
+        game.addRoll(1);
+        assert(game.nextRollMax() === 10);
+    },
+    function nextRollMaxFillBall1(){
+        const game = new Game();
+        // 1
+        game.addRoll(10);
+        // 2
+        game.addRoll(10);
+        // 3
+        game.addRoll(10);
+        // 4
+        game.addRoll(10);
+        // 5
+        game.addRoll(10);
+        // 6
+        game.addRoll(10);
+        // 7
+        game.addRoll(10);
+        // 8
+        game.addRoll(10);
+        // 9
+        game.addRoll(10);
+        // 10
+        game.addRoll(10);
+
+        assert(game.nextRollMax() === 10);
+    },
+    function nextRollMaxFillBall2(){
+        const game = new Game();
+        // 1
+        game.addRoll(10);
+        // 2
+        game.addRoll(10);
+        // 3
+        game.addRoll(10);
+        // 4
+        game.addRoll(10);
+        // 5
+        game.addRoll(10);
+        // 6
+        game.addRoll(10);
+        // 7
+        game.addRoll(10);
+        // 8
+        game.addRoll(10);
+        // 9
+        game.addRoll(10);
+        // 10
+        game.addRoll(10);
+        // fill ball one
+        game.addRoll(7);
+
+        assert(game.nextRollMax() === 3);
+    },
+    function nextRollMaxGameEnded(){
+        const game = new Game();
+        // 1
+        game.addRoll(10);
+        // 2
+        game.addRoll(10);
+        // 3
+        game.addRoll(10);
+        // 4
+        game.addRoll(10);
+        // 5
+        game.addRoll(10);
+        // 6
+        game.addRoll(10);
+        // 7
+        game.addRoll(10);
+        // 8
+        game.addRoll(10);
+        // 9
+        game.addRoll(10);
+        // 10
+        game.addRoll(10);
+
+        game.addRoll(10);
+        game.addRoll(10);
+        assert(game.nextRollMax() === 0);
+    },
 ];
 
 testAndDisplay(tests);
