@@ -19,16 +19,15 @@ When the game has reached an end:
   - [X] number of pins
 
 - [X] Frame
- - [X] Rolls array (one, two or three for last frame)
- - [X] Bonus points (backfilled from next rolls)
- - [X] Score
+  - [X] Rolls array (one, two or three for last frame)
+  - [X] Bonus points (backfilled from next rolls)
+  - [X] Score
 
 - [X] Game
   - [X] Frames array
   - [X] Current frame
   - [X] Current score
+- [X] UI
 
-## TODO
-
-- [ ] UI
+TODO
 - [ ] Better testing framework (https://www.instagram.com/p/BmnN2gfhb3e/)
