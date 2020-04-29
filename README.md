@@ -30,4 +30,4 @@ When the game has reached an end:
 - [X] UI
 
 TODO
-- [ ] Better testing framework (https://www.instagram.com/p/BmnN2gfhb3e/)
+- [ ] Use a better testing framework: https://github.com/alicelieutier/test_framework
